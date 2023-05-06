@@ -60,6 +60,7 @@ Comparison
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description
@@ -93,6 +94,7 @@ Type cast
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description
@@ -118,6 +120,7 @@ The ``.assignFromBits`` operator can be viewed as the reverse of ``.asBits``.
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description

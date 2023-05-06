@@ -62,6 +62,7 @@ Logic
 
 .. list-table::
    :header-rows: 1
+   :widths: 3 5 3
 
    * - Operator
      - Description
@@ -196,6 +197,7 @@ Comparison
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description
@@ -223,6 +225,7 @@ Type cast
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description
@@ -257,6 +260,7 @@ Misc
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description

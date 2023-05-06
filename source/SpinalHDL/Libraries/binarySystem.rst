@@ -11,12 +11,11 @@ Specification
 
 .. list-table::
    :header-rows: 1
-   :widths: 4 8  1
+   :widths: 4 8 1
 
    * - Syntax
      - Description
      - Return
-
    * - **String**.asHex
      - HexString to BigInt == BigInt(string, 16)
      - BigInt
