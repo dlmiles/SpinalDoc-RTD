@@ -54,7 +54,8 @@ The following enumeration encodings are supported:
      - Use Bits to store states in declaration order (value from 0 to n-1)
    * - ``binaryOneHot``
      - stateCount
-     - Use Bits to store state. Each bit corresponds to one state
+     - Use Bits to store state. Each bit corresponds to one state, only one
+       bit is set at a time in the hardware encoded state representation.
    * - ``graySequential``
      - ``log2Up(stateCount)``
      - Encode index (numbers as if using ``binarySequential``) as binary gray code.
@@ -191,10 +192,10 @@ Type cast
      - Binary cast to Bits
      - Bits(w(x) bits)
    * - x.asUInt
-     - Binary cast to UInt
+     - Binary cast to UInt  REVIEWME Method not found
      - UInt(w(x) bits)
    * - x.asSInt
-     - Binary cast to SInt
+     - Binary cast to SInt  REVIEWME Method not found
      - SInt(w(x) bits)
    * - e.assignFromBits(bits)
      - Bits cast to enum
