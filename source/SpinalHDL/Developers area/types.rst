@@ -163,7 +163,7 @@ Elements could be defined as follows:
      - Set bits in range x with y
    * - x : Range -> y : String
      - | Set bits in range x with y 
-       | The string format follow same rules as B/U/S"xyz" one
+       | The string format follows the same rules as B/U/S"xyz" one
    * - x : Range -> y : T
      - Set bits in range x with y
    * - default -> y : Boolean/Bool
@@ -772,7 +772,8 @@ Continuous Assignment Literals as signal declaration
 You can also use them in expressions to do three things at once :
 
 * Define a wire
-* Maintain the result of an equality operation with the constant value and another signal
+* Maintain the result of an equality operation in logic implementation with the constant
+  value and another signal
 * Setup inferred type: Bool due to use of === equality operator having a
   result of type Bool
 
