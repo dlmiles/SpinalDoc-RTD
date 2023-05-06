@@ -56,16 +56,23 @@ The syntax to define inputs and outputs is as follows:
    * - Syntax
      - Description
      - Return
-   * - in Bool()/out Bool()
+   * - | in Bool()
+       | out Bool()
      - Create an input Bool/output Bool
      - Bool
-   * - in/out Bits/UInt/SInt[(x bits)]
+   * - | in Bits/UInt/SInt[(x bits)]
+       | out Bits/UInt/SInt[(x bits)]
+       | `in Bits(3 bits)`
      - Create an input/output of the corresponding type
      - Bits/UInt/SInt
-   * - in/out(T)
+   * - | in(T)
+       | out(T)
+       | `out UInt(7 bits)`
      - For all other data types, you may have to add some brackets around it. Sorry, this is a Scala limitation.
      - T
-   * - master/slave(T)
+   * - | master(T)
+       | slave(T)
+       | `master(Bool())`
      - This syntax is provided by the ``spinal.lib`` library (If you annotate your object with the ``slave`` syntax, then import ``spinal.lib.slave`` instead).
        T should extend ``IMasterSlave`` – Some documentation is available :ref:`here <interface_example_apb>`. You may not actually need the brackets, so ``master T`` is fine as well.
      - T
@@ -158,6 +165,16 @@ You can add functions inside the config, along with requirements on the config a
 
      require(dataWidth == 32 || dataWidth == 64, "Data width must be 32 or 64")
    }
+
+.. note::
+
+   This parametrization occurs entirely within the SpinalHDL code-generation during
+   elaboration.  This is resolved into concrete terms of instantiated artifacts
+   that are represented in the HDL (VHDL/Verilog).  The methods described
+   here so not use "Generic" or "Parameter" in the generated HDL language.
+
+   See also Generic for more information around that mechanism.  REVIEWME
+
 
 Synthesized component names
 ---------------------------
