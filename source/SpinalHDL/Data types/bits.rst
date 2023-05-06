@@ -21,7 +21,7 @@ The syntax to declare a bit vector is as follows: (everything between [] is opti
      - Description
      - Return
    * - Bits [()]
-     - Create a BitVector, bits count is inferred
+     - Create a BitVector, bit count is inferred through usage at assignment
      - Bits
    * - Bits(x bits)
      - Create a BitVector with x bits
@@ -41,7 +41,12 @@ The syntax to declare a bit vector is as follows: (everything between [] is opti
 .. code-block:: scala
 
    // Declaration
-   val myBits  = Bits()     // the size is inferred     
+   val myBits  = Bits()     // the size is inferred through later assignment
+   myBits := B("1010")
+   when(condxMaybe) {
+     myBits := B("110000")  // Bits(6 bits) would be inferred
+   }
+
    val myBits1 = Bits(32 bits)   
    val myBits2 = B(25, 8 bits)
    val myBits3 = B"8'xFF"   // Base could be x,h (base 16)                         
@@ -92,29 +97,29 @@ Logic
    * - x.andR
      - AND all bits of x
      - Bool
-   * - x \>\> y
-     - Logical shift right, y: Int
+   * - y = 1 // int<br/>x \>\> y
+     - Logical shift right, y: Int<br/>Result may reduce width
      - Bits(w(x) - y bits)
-   * - x \>\> y
-     - Logical shift right, y: UInt
+   * - y = U(1) // UInt<br/>x \>\> y
+     - Logical shift right, y: UInt<br/>Result is same width
      - Bits(w(x) bits)
-   * - x \<\< y
-     - Logical shift left, y: Int
+   * - y = 1 // int<br/>x \<\< y
+     - Logical shift left, y: Int<br/>Result may increase width
      - Bits(w(x) + y bits)
-   * - x \<\< y
-     - Logical shift left, y: UInt
+   * - y = U(1) // UInt<br/>x \<\< y
+     - Logical shift left, y: UInt<br/>Result may increase width
      - Bits(w(x) + max(y) bits)
    * - x \|\>\> y
-     - Logical shift right, y: Int/UInt
+     - Logical shift right, y: Int/UInt<br/>Result is same width
      - Bits(w(x) bits)
    * - x \|\<\< y
-     - Logical shift left, y: Int/UInt
+     - Logical shift left, y: Int/UInt<br/>Result is same width
      - Bits(w(x) bits)
    * - x.rotateLeft(y)
-     - Logical left rotation, y: UInt/Int
+     - Logical left rotation, y: UInt/Int<br/>Result is same width
      - Bits(w(x) bits)
    * - x.rotateRight(y)
-     - Logical right rotation, y: UInt/Int
+     - Logical right rotation, y: UInt/Int<br/>Result is same width
      - Bits(w(x) bits)
    * - x.clearAll[()]
      - Clear all bits
@@ -196,12 +201,16 @@ Type cast
    * - x.asBools
      - Cast to an array of Bools
      - Vec(Bool(), w(x))
+   * - x.asBool
+     - Cast LSB to single Bool
+     - Bool(x.lsb)
    * - B(x: T)
      - Cast Data to Bits
      -  Bits(w(x) bits)
 
 
-To cast a ``Bool``, ``UInt`` or an ``SInt`` into a ``Bits``, you can use ``B(something)``:
+To cast a ``Bool``, ``UInt`` or an ``SInt`` into a ``Bits``, you can use ``B(something)``
+or ``B(something, BitCount)``:
 
 .. code-block:: scala
 
@@ -213,6 +222,10 @@ To cast a ``Bool``, ``UInt`` or an ``SInt`` into a ``Bits``, you can use ``B(som
 
    // Cast a SInt to Bits
    val myBits = B(mySInt)
+
+   // Cast the same SInt to Bits but resize to 3 bits
+   //  (will expand/truncate as necessary, retaining LSB)
+   val myBits = B(mySInt, 3 bits)
 
 Bit extraction
 ~~~~~~~~~~~~~~
@@ -234,13 +247,13 @@ Bit extraction
      - Read a range of bit. Ex : myBits(4 downto 2)
      - Bits(range bits)
    * - x(y) := z
-     - Assign bits, y: Int/UInt
+     - Assign a single bit, y: Int/UInt
      - Bool
    * - x(offset, width bits) := z
      - Assign bitfield, offset: UInt, width: Int
      - Bits(width bits)
    * - x(\ :ref:`range <range>`\ ) := z
-     - Assign a range of bit. Ex : myBits(4 downto 2) := B"010"
+     - Assign a range of bits. Ex : myBits(4 downto 2) := B"010"
      - Bits(range bits)
 
 
@@ -282,11 +295,15 @@ Misc
      - Return the index of the MSB (highest allowed index for Bits)
      - Int
    * - x.msb
-     - Return the most significant bit
+     - Return the most significant bit value
      - Bool
    * - x.lsb
-     - Return the least significant bit
+     - Return the least significant bit value
      - Bool
+   * - x.reverse
+     - Return a representation of the same instance in reverse bit order,
+       MSB<>LSB are mirrored.
+     - Bits(w(x) bits)
    * - x ## y
      - Concatenate, x->high, y->low
      - Bits(w(x) + w(y) bits)
@@ -297,18 +314,29 @@ Misc
      - Subdivide x in multiple slices of y bits, y: Int
      - Vec(Bits, w(x)/y)
    * - x.resize(y)
-     - Return a resized copy of x, if enlarged, it is filled with zero, y: Int
+     - Return a resized copy of x, if enlarged, it is filled with zero
+       padding at MSB as necessary, y: Int
      - Bits(y bits)
    * - x.resized
-     - Return a version of x which is allowed to be automatically resized were needed
+     - Return a version of x which is allowed to be automatically resized were
+       needed.  The resize operation is deferred until the point of assignment later.
+       The resize may widen or truncate, retaining the LSB.
      - Bits(w(x) bits)
    * - x.resizeLeft(x)
      - Resize by keeping MSB at the same place, x:Int
+       The resize may widen or truncate, retaining the MSB.
      - Bits(x bits)
+   * - x.getZero
+     - Return a new instance of Bits that is assigned a constant value of zeros the same width as x.
+     - Bits(0, w(x) bits)
+   * - x.getAllTrue
+     - Return a new instance of Bits that is assigned a constant value of ones the same width as x.
+     - Bits(w(x) bits).setAll()
 
 .. note::
   `validRange` can only be used for types where the minimum and maximum values fit into a signed
-  32-bit integer. (This is a limitation given by the Scala range type which uses `Int`)
+  32-bit integer. (This is a limitation given by the Scala ``scala.collection.immutable.Range``
+  type which uses `Int`)
 
 .. code-block:: scala
 
