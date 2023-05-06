@@ -203,6 +203,7 @@ Comparison
 
 .. list-table::
    :header-rows: 1
+   :widths: 1 1 1
 
    * - Operator
      - Description

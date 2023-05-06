@@ -79,6 +79,7 @@ This will produce the following truth table:
 
 .. list-table::
    :header-rows: 1
+   :widths: 2 2 1 3
 
    * - x
      - y
