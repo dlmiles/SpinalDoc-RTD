@@ -33,14 +33,16 @@ The syntax to declare a boolean value is as follows: (everything between [] is o
      - Create a Bool assigned with ``false``
      - Bool
    * - Bool(value: Boolean)
-     - Create a Bool assigned with a Scala Boolean(true, false)
+     - Create a Bool assigned with a value from a Scala Boolean type (true,
+       false).  This implicitly converts to ``True`` or ``False`` as
+       necessary during elboration phase of HDL generation.
      - Bool
 
 
 .. code-block:: scala
 
-   val myBool_1 = Bool()          // Create a Bool
-   myBool_1 := False            // := is the assignment operator
+   val myBool_1 = Bool()        // Create a Bool
+   myBool_1 := False            // := is the assignment operator (like verilog <=)
 
    val myBool_2 = False         // Equivalent to the code above 
 
@@ -50,6 +52,10 @@ Operators
 ^^^^^^^^^
 
 The following operators are available for the ``Bool`` type:
+
+.. note:
+
+   Both sides of logic expressions ``x`` and ``y`` need to be of type Bool.
 
 Logic
 ~~~~~
@@ -74,12 +80,15 @@ Logic
    * - x ^ y
      - Logical XOR
      - Bool
+   * - ~x
+     - Logical NOT
+     - Bool
    * - x.set[()]
      - Set x to True
-     - 
+     - Unit (none)
    * - x.clear[()]
      - Set x to False
-     - 
+     - Unit (none)
    * - x.setWhen(cond)
      - Set x when cond is True
      - Bool
@@ -101,11 +110,11 @@ Logic
 
    val d = False
    when(cond) {
-     d.set()    // equivalent to d := True
+     d.set()                // equivalent to d := True
    }
 
    val e = False
-   e.setWhen(cond) // equivalent to when(cond) { d := True }
+   e.setWhen(cond)          // equivalent to when(cond) { d := True }
 
    val f = RegInit(False) fallWhen(ack) setWhen(req)
    /** equivalent to
@@ -115,12 +124,18 @@ Logic
     * f := req || (f && !ack)
     */
 
-  // mind the order of assignments!
+  // mind the order of assignments!  last one wins
   val g = RegInit(False) setWhen(req) fallWhen(ack)
   // equivalent to g := ((!g) && req) || (g && !ack)
 
 Edge detection
 ~~~~~~~~~~~~~~
+
+This feature will always imply a :ref:`RegNext <regnext>` pattern to track the state history
+at the last cycle to compare and detect the edge in this cycle.
+
+This features does not reconfigure a D Flip-Flop to use an alternative CLK
+source than the default inherited from the component hierarchy.
 
 .. list-table::
    :header-rows: 1
@@ -153,6 +168,9 @@ Edge detection
    * - x.edges(initAt: Bool)
      - Same as x.edges but with a reset value
      - BoolEdges
+   * - x.toggle[()]
+     - Return True at every edge
+     - Bool
 
 
 .. code-block:: scala
@@ -211,18 +229,20 @@ Type cast
      - Return
    * - x.asBits
      - Binary cast to Bits
-     - Bits(w(x) bits)
+     - Bits(1 bit)
    * - x.asUInt
      - Binary cast to UInt
-     - UInt(w(x) bits)
+     - UInt(1 bit)
    * - x.asSInt
      - Binary cast to SInt
-     - SInt(w(x) bits)
+     - SInt(1 bit)
    * - x.asUInt(bitCount)
-     - Binary cast to UInt and resize
+     - Binary cast to UInt and resize, putting Bool value in LSB and padding
+       with zeros.
      - UInt(bitCount bits)
    * - x.asBits(bitCount)
-     - Binary cast to Bits and resize
+     - Binary cast to Bits and resize, putting Bool value in LSB and padding
+       with zeros.
      - Bits(bitCount bits)
 
 
@@ -250,8 +270,9 @@ Misc
 
    val a, b, c = Bool()
 
-   // Concatenation of three Bool into a Bits
+   // Concatenation of three Bool into a single Bits(3 bits) type
    val myBits = a ## b ## c
+
 
 MaskedBoolean
 ~~~~~~~~~~~~~
@@ -260,6 +281,6 @@ A masked boolean allows don’t care values. They are usually not used on their 
 
 .. code-block:: scala
 
-  // first argument: boolean value
-  // second argument: do we care ?
+  // first argument: Scala Boolean value
+  // second argument: do we care ? expressed as a Scala Boolean
   val masked = new MaskedBoolean(true, false)
