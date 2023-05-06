@@ -21,17 +21,17 @@ Here is an example of class parameters
 
 .. code-block:: scala
 
-  case class MyBus(width : Int) extends Bundle{
+  case class MyBus(width : Int) extends Bundle {
     val mySignal = UInt(width bits)
   }  
   
 .. code-block:: scala
 
-  case class MyComponent(width : Int) extends Component{
+  case class MyComponent(width : Int) extends Component {
     val bus = MyBus(width)
   }
   
-You can also use global variable defined in scala object's, but note that recently was added the ScopeProperty feature which improve on that solution.
+You can also use global variables defined in scala object's (which make them static), but note that recently was added the ScopeProperty feature which improve on that solution.
 
 Optional hardware
 ------------------------------------------
@@ -42,7 +42,7 @@ For optional signal :
 
 .. code-block:: scala
 
-  case class MyComponent(flag : Boolean) extends Component{
+  case class MyComponent(flag : Boolean) extends Component {
     val mySignal = flag generate (Bool())  //Equivalent to "if (flag) in Bool() else null"
   }
 
@@ -54,8 +54,8 @@ If you want to disable the generation of a chunk of hardware :
 
 .. code-block:: scala
 
-  case class MyComponent(flag : Boolean) extends Component{
-    val myHardware = flag generate new Area{
+  case class MyComponent(flag : Boolean) extends Component {
+    val myHardware = flag generate new Area {
       //optional hardware here
     }
   }
@@ -64,8 +64,8 @@ You can also use scala for loops :
 
 .. code-block:: scala
 
-  case class MyComponent(amount : Int) extends Component{
-    val myHardware = for(i <- 0 until amount) yield new Area{
+  case class MyComponent(amount : Int) extends Component {
+    val myHardware = for(i <- 0 until amount) yield new Area {
       // hardware here
     }
   }
