@@ -12,4 +12,5 @@ Structuring
    blackbox
    naming
    parametrization
+   attributes
 
