@@ -20,4 +20,5 @@ The chapters below explain:
    blackbox
    naming
    parametrization
+   attributes
 
