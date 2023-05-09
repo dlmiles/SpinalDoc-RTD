@@ -179,6 +179,8 @@ jobs:
         cat $GITHUB_ENV
 
     - name: 'CI-ENV Validate'
+      if: github.repository != 'dlmiles/SpinalDoc-RTD'
+      # ^^^ REMOVEME: bypass step for dlmiles to simulate live deployment testing
       run: |
         # Only one DEPLOY mode is allowed, if any
         if [ "$DEPLOY_ENV_TEST" = "true" ] && [ "$DEPLOY_ENV_LIVE" = "true" ]
