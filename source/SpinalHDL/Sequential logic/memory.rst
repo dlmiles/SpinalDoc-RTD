@@ -55,8 +55,8 @@ The following table show how to add access ports on a memory :
        |  [enable]
        |  [mask]
        | )
-     - Synchronous write with an optional mask.
-       If no enable is specified, it's automatically inferred from the conditional scope where this function is called
+     - | Synchronous write with an optional mask.
+       | If no enable is specified, it's automatically inferred from the conditional scope where this function is called
      - 
    * - | mem.readAsync(
        |  address
@@ -372,3 +372,17 @@ There are currently 4 kinds of technologies possible:
 * ``ramBlock``
 * ``distributedLut``
 * ``registerFile``
+
+This has can have the effect to insert hinting in the codegen when the
+SpinalConfig#setDevice(Devie) has been correctly configured for your device-vendor.
+Resulting in annottations in HDL that might look like:
+
+.. code-block:: verilog
+
+   (* ram_style = "distributed" *)
+   (* ramsyle = "no_rw_check" *)
+
+If this is important to your design flow check the output HDL for the expected attributes/generic
+insertion.  There is always the addAttribute() mechanmism to consider if you
+need to explicitly specify settings.
+
