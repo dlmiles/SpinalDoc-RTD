@@ -79,3 +79,13 @@ For ``Stream[Fragment[T]]``\ , following function are also accessible :
      - Stream[Fragment[T]]
      - Add the ``header`` to each packet on ``x`` and return the resulting bus
 
+
+Example
+-------
+
+.. code-block:: scala
+
+   // FIXME example: single stream fragment transation, showing tx and rx sides
+   // FIXME example: two flow fragment tranaction, showing tx and rx sides
+   // FIXME example: three stream fragment transation, showing tx and rx sides
+   val inputStreamFragment = Stream[Fragment[]](Bits(8 bits))
