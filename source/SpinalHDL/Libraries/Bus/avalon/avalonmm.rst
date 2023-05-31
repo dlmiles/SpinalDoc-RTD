@@ -4,11 +4,17 @@ AvalonMM
 
 The AvalonMM bus fit very well in FPGA. It is very flexible :
 
-* Able of the same simplicity than APB
-* Better for than AHB in many application that need bandwidth because AvalonMM has a mode that decouple read response from commands (reduce latency read latency impact).
-* Less performance than AXI but use much less area (Read and write command use the same handshake channel. The master don't need to store address of pending request to avoid Read/Write hazard)
+* Able to achieve same simplicity as APB
+* Can be a better fit than AHB in many applications that need bandwidth because AvalonMM has a mode that decouple read response from commands (reduces read latency impact).
+* Has less performance than AXI but uses less area (Read and write commands use the same handshake channel. The master don't need to store address of pending request to avoid Read/Write hazard)
 
-Configuration and instanciation
+Characteristics
+---------------
+
+ * ???? REVIEWME
+
+
+Configuration and instantiation
 -------------------------------
 
 The ``AvalonMM`` Bundle has a construction argument ``AvalonMMConfig``. Because of the flexible nature of the Avalon bus, the ``AvalonMMConfig`` as many configuration elements. For more information the Avalon spec could be find `here <https://www.intel.com/content/www/us/en/search.html?ws=text#q=avalon%20interface%20specifications&sort=relevancy>`_.
