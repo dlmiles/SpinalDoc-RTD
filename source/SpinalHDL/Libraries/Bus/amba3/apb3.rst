@@ -4,7 +4,13 @@ Apb3
 
 The AMBA3-APB bus is commonly used to interface low bandwidth peripherals.
 
-Configuration and instanciation
+Characteristics
+---------------
+
+ * ???? REVIEWME
+
+
+Configuration and instantiation
 -------------------------------
 
 First each time you want to create a APB3 bus, you will need a configuration object. This configuration object is an ``Apb3Config`` and has following arguments :
