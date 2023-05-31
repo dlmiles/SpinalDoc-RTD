@@ -2,7 +2,22 @@
 AHB-Lite3
 =========
 
-Configuration and instanciation
+Characteristics
+---------------
+
+ * Based on AMBA 3 AHB-lite specification.
+ * Supports only a single master, compared to AMBA 2 AHB-lite that came
+   before, so there is a related signal count reduction due to this.
+ * Shared HWDATA and HADDR lines, address decoder asserts HSEL line
+   that is non-shared per device endpoint.
+ * Separate HWDATA (to downstream device) and HRDATA (from downstream device)
+   data path signals, so no tri-state support and interconnect may need to
+   multiplex HRDATA.
+ * Burst transfer mode capable.
+ * Wide data bus configurations are possible in bits^2, such as 64 through to 1024 bits.
+
+
+Configuration and instantiation
 -------------------------------
 
 First each time you want to create a AHB-Lite3 bus, you will need a configuration object. This configuration object is an ``AhbLite3Config`` and has following arguments :
@@ -29,7 +44,7 @@ There is in short how the AHB-Lite3 bus is defined in the SpinalHDL library :
 
 .. code-block:: scala
 
-   case class AhbLite3(config: AhbLite3Config) extends Bundle with IMasterSlave{
+   case class AhbLite3(config: AhbLite3Config) extends Bundle with IMasterSlave {
      //  Address and control
      val HADDR = UInt(config.addressWidth bits)
      val HSEL = Bool()
@@ -66,7 +81,7 @@ There is a short example of usage :
    val ahbX = AhbLite3(ahbConfig)
    val ahbY = AhbLite3(ahbConfig)
 
-   when(ahbY.HSEL){
+   when(ahbY.HSEL) {
      //...
    }
 
