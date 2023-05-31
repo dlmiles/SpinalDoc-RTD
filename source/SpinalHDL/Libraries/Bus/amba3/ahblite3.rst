@@ -2,7 +2,13 @@
 AHB-Lite3
 =========
 
-Configuration and instanciation
+Characteristics
+---------------
+
+ * ???? REVIEWME
+
+
+Configuration and instantiation
 -------------------------------
 
 First each time you want to create a AHB-Lite3 bus, you will need a configuration object. This configuration object is an ``AhbLite3Config`` and has following arguments :
