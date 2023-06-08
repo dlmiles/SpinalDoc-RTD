@@ -39,3 +39,4 @@ More detailed introduction of the language in :ref:`Introduction/SpinalHDL`
    SpinalHDL/Legacy/index
    SpinalHDL/miscelenea/index
    SpinalHDL/Developers area/index
+   SpinalHDL/Epilogue/Glossary
