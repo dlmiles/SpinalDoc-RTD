@@ -85,7 +85,28 @@ Example
 
 .. code-block:: scala
 
-   // FIXME example: single stream fragment transation, showing tx and rx sides
+   // FIXME example: single stream fragment transaction, showing tx and rx sides
    // FIXME example: two flow fragment tranaction, showing tx and rx sides
    // FIXME example: three stream fragment transation, showing tx and rx sides
-   val inputStreamFragment = Stream[Fragment[]](Bits(8 bits))
+   val inputStreamFragment = master port Stream (Fragment(Bits(8 bits)))
+
+
+
+This ``extender`` provides several status signals, such as ``working``, ``last``, ``done`` where ``working`` means there is one input transfer accepted and in-progress, ``last`` indicates the last output transfer is prepared and waiting to complete, ``done`` become valid represents the last output transfer is fireing and making the current input transaction process complete and ready to start another transaction.
+
+.. wavedrom::
+
+  { "signal": [
+    { "name": "clk",         "wave": "p........." },
+    { "name": "inputStream",        "wave": "x3x.....4x", "data": ["T1", "T2"] },
+    { "name": "count",        "wave": "x3x.....4x", "data": ["2", "4"] },
+    { "name": "outputStream",       "wave": "x..2x2x.2x", "data": ["D1", "D2", "D3"] },
+    { "name": "working",      "wave": "0.1......."},
+    { "name": "done",      "wave": "0.......10"},
+    { "name": "first",      "wave": "0.1.0....."},
+    { "name": "last",      "wave": "0.....1..0"},
+  ]}
+
+.. note::
+
+   If only count for output stream is required then use ``StreamTransactionCounter`` instead.
